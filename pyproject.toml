@@ -1,0 +1,27 @@
+[tool.poetry]
+name = "1p"
+version = "0.1.0"
+description = "1Password CLI helper"
+authors = ["Antoine POPINEAU <antoine@popineau.eu>"]
+license = "MIT"
+packages = [
+  { include = "onep/**/*.py" }
+]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+inquirer = "^2.9.2"
+keyring = "^23.5.0"
+
+[tool.poetry.dev-dependencies]
+black = "^22.3.0"
+
+[tool.poetry.scripts]
+1p = "onep.onep:main"
+
+[tool.black]
+line-length = 200
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
