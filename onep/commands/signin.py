@@ -1,10 +1,11 @@
+from typing import Optional
 import keyring
 import os
 
 from ..util import KEYRING_SERVICE, is_plain_secret_storage, fatal, run, session_file
 
 
-def signin(account):
+def signin(account: str) -> Optional[str]:
     (status, stdout, stderr) = run(["signin", "--raw", f"--account={account}"], silent=True)
 
     if not status:

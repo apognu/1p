@@ -1,11 +1,11 @@
-import inquirer
+import inquirer  # type: ignore
 import json
 import sys
 
 from ..util import exit, fatal, run
 
 
-def show(session, to_json, id, tags, fields, otp, select):
+def show(session: str, to_json: bool, id: str, tags: str, fields: str, otp: bool, select: bool) -> None:
     if len(id) == 0 and tags is None:
         fatal("Either tags or ID should be provided")
 
@@ -20,7 +20,7 @@ def show(session, to_json, id, tags, fields, otp, select):
         entries = json.loads(stdout)
 
         if len(entries) == 0:
-            exit("No entry matched these filters.", file=sys.stderr)
+            exit("No entry matched these filters.")
         if not select and len(entries) > 1:
             print("WARN: Multiple entries responded to this query, showing the first", file=sys.stderr)
 

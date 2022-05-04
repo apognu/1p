@@ -4,7 +4,7 @@ import sys
 from ..util import exit, fatal, run
 
 
-def search(session, to_json, vault, tags, term):
+def search(session: str, to_json: bool, vault: str, tags: str, term: str) -> None:
     args = ["item", "list", "--format=json"]
 
     if vault is not None:
@@ -26,7 +26,7 @@ def search(session, to_json, vault, tags, term):
     entries = list(map(lambda entry: [entry["id"], entry["title"]], entries))
 
     if len(entries) == 0:
-        exit("No entry matched these filters.", file=sys.stderr)
+        exit("No entry matched these filters.")
 
     print("{:26}    {}".format(*["ID", "TITLE"]))
 

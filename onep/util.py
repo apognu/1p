@@ -1,3 +1,4 @@
+from typing import Optional
 import keyring
 import os
 import subprocess
@@ -9,17 +10,17 @@ CACHE_DIR = path.expanduser("~/.cache/1p")
 KEYRING_SERVICE = "com.github.apognu.1p"
 
 
-def exit(message):
+def exit(message: str) -> None:
     print(message.strip(), file=sys.stdout)
     sys.exit(0)
 
 
-def fatal(message):
+def fatal(message: str) -> None:
     print(message.strip(), file=sys.stdout)
     sys.exit(1)
 
 
-def run(args, session=None, json=False, silent=False):
+def run(args: list[str], session: str = None, json: bool = False, silent: bool = False) -> tuple[bool, str, str]:
     if session is not None:
         args.append(f"--session={session}")
 
@@ -39,11 +40,11 @@ def run(args, session=None, json=False, silent=False):
     return (cmd.returncode == 0, stdout.decode("utf-8"), stderr.decode("utf-8"))
 
 
-def is_plain_secret_storage():
+def is_plain_secret_storage() -> bool:
     return os.getenv("ONEP_SECRET_BACKEND") == "plain"
 
 
-def init_secret_storage():
+def init_secret_storage() -> None:
     if is_plain_secret_storage():
         if not path.isdir(CACHE_DIR):
             os.mkdir(CACHE_DIR, mode=0o700)
@@ -52,11 +53,11 @@ def init_secret_storage():
             fatal("ERROR: cannot use session directory because mode is not 700")
 
 
-def session_file(account):
+def session_file(account: str) -> str:
     return path.join(CACHE_DIR, f"{account}.token")
 
 
-def load_session(account):
+def load_session(account: str) -> Optional[str]:
     if is_plain_secret_storage():
         try:
             file = session_file(account)
@@ -77,17 +78,17 @@ def load_session(account):
             fatal(f"ERROR: cannot read session file: {type(e).__name__}")
 
 
-def check_session(account):
-    from . import commands
+def check_session(account: str) -> Optional[str]:
+    from onep.commands import signin
 
     session = load_session(account)
 
     if session is None:
-        return commands.signin(account)
+        return signin(account)
 
     (status, _, _) = run(["account", "get"], session=session, silent=True)
 
     if not status:
-        return commands.signin(account)
+        return signin(account)
 
     return session

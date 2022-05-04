@@ -15,12 +15,19 @@ keyring = "^23.5.0"
 
 [tool.poetry.dev-dependencies]
 black = "^22.3.0"
+mypy = "^0.950"
 
 [tool.poetry.scripts]
 1p = "onep.onep:main"
 
 [tool.black]
 line-length = 200
+
+[tool.mypy]
+exclude = [".venv/"]
+# follow_imports = "skip"
+# ignore_missing_imports = true
+warn_no_return = false
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]

@@ -1,15 +1,12 @@
-import json
-import os
 import sys
 
-from argparse import ArgumentParser
-from os import path
+from argparse import ArgumentParser, Namespace
 
 from .util import init_secret_storage, check_session, fatal
-from . import commands
+from onep.commands import *
 
 
-def main():
+def main() -> None:
     init_secret_storage()
 
     args = parse_args()
@@ -23,22 +20,24 @@ def main():
         if session is None:
             sys.exit(1)
 
+    assert session is not None
+
     match args.command:
         case "signin":
-            commands.signin(args.account)
+            signin(args.account)
         case "vaults":
-            commands.vaults(session, args.json)
+            vaults(session, args.json)
         case "vault":
-            commands.vault(session, args.json, args.id)
+            vault(session, args.json, args.id)
         case "search":
-            commands.search(session, args.json, args.vault, args.tags, args.term)
+            search(session, args.json, args.vault, args.tags, args.term)
         case "show":
-            commands.show(session, args.json, args.id, args.tags, args.fields, args.otp, args.select)
+            show(session, args.json, args.id, args.tags, args.fields, args.otp, args.select)
         case "share":
-            commands.share(session, args.id, args.time, args.once)
+            share(session, args.id, args.time, args.once)
 
 
-def parse_args():
+def parse_args() -> Namespace:
     cli = ArgumentParser(prog="1p")
     cli.add_argument("-j", "--json", action="store_true")
     cli.add_argument("account", metavar="ACCOUNT")
