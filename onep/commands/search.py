@@ -4,7 +4,7 @@ import sys
 from ..util import exit, fatal, run
 
 
-def search(session: str, to_json: bool, vault: str, tags: str, term: str) -> None:
+def search(session: str, to_json: bool, vault: str, tags: str, term: list[str]) -> None:
     args = ["item", "list", "--format=json"]
 
     if vault is not None:
@@ -21,7 +21,8 @@ def search(session: str, to_json: bool, vault: str, tags: str, term: str) -> Non
     entries = json.loads(stdout)
 
     if term is not None:
-        entries = list(filter(lambda entry: term.lower() in entry["title"].lower(), entries))
+        id = " ".join(term)
+        entries = list(filter(lambda entry: id.lower() in entry["title"].lower(), entries))
 
     entries = list(map(lambda entry: [entry["id"], entry["title"]], entries))
 

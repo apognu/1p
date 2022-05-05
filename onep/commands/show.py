@@ -10,7 +10,7 @@ def show(session: str, to_json: bool, id: str, tags: str, fields: str, otp: bool
         fatal("Either tags or ID should be provided")
 
     if len(id) > 0:
-        id = "".join(id)
+        id = " ".join(id)
     else:
         (status, stdout, stderr) = run(["item", "list", "--format=json", f"--tags={tags}"], session=session, silent=True)
 

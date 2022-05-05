@@ -32,7 +32,7 @@ def main() -> None:
         case "search":
             search(session, args.json, args.vault, args.tags, args.term)
         case "show":
-            show(session, args.json, args.id, args.tags, args.fields, args.otp, args.select)
+            show(session, args.json, args.term, args.tags, args.fields, args.otp, args.select)
         case "share":
             share(session, args.id, args.time, args.once)
 
@@ -53,7 +53,7 @@ def parse_args() -> Namespace:
     cmd_search = commands.add_parser("search", help="Search entries matching provided term")
     cmd_search.add_argument("-v", "--vault", type=str, metavar="VAULT")
     cmd_search.add_argument("-t", "--tags", type=str, metavar="TAGS")
-    cmd_search.add_argument("-s", "--term", type=str, metavar="TERM")
+    cmd_search.add_argument("term", metavar="TERM", nargs="*", default=[])
 
     cmd_show = commands.add_parser("show", help="Display an entry")
     cmd_show_target = cmd_show.add_mutually_exclusive_group(required=True)
