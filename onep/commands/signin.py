@@ -20,11 +20,11 @@ def signin(account: str) -> Optional[str]:
 
             return stdout
         except Exception as e:
-            fatal(f"ERROR: Cannot write session file: {type(e).__name__}")
+            fatal(f"cannot write session file: {type(e).__name__}")
     else:
         try:
             keyring.set_password(KEYRING_SERVICE, account, stdout)
 
             return stdout
         except keyring.errors.KeyringError as e:
-            fatal(f"ERROR: Cannot write session file: {type(e).__name__}")
+            fatal(f"cannot write session file: {type(e).__name__}")

@@ -8,6 +8,16 @@ It opens a session with 1Password and stores the session token in the system's k
 
 It requires that the configured 1Password account has a shorthand defined (when using `op account add`).
 
+## Installation
+
+```shell
+$ # From PyPI
+$ pip install onep
+
+$ # Development build from GitHub
+$ https://github.com/apognu/1p/releases/download/tip/onep-tip-py3-none-any.whl
+```
+
 ## Usage
 
 ```shell

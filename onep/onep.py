@@ -3,6 +3,7 @@ import sys
 from argparse import ArgumentParser, Namespace
 
 from .util import init_secret_storage, check_session, fatal
+from .colors import *
 from onep.commands import *
 
 
@@ -12,7 +13,7 @@ def main() -> None:
     args = parse_args()
 
     if args.command is None:
-        fatal("ERROR: no command provided")
+        fatal("no command provided")
 
     if args.command != "signin":
         session = check_session(args.account)

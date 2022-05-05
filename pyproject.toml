@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "1p"
+name = "onep"
 version = "0.1.0"
 description = "1Password CLI helper"
 authors = ["Antoine POPINEAU <antoine@popineau.eu>"]
@@ -12,6 +12,7 @@ packages = [
 python = ">=3.7"
 inquirer = "^2.9.2"
 keyring = "^23.5.0"
+termcolor = "^1.1.0"
 
 [tool.poetry.dev-dependencies]
 black = "^22.3.0"
@@ -27,6 +28,8 @@ line-length = 200
 exclude = [".venv/"]
 strict = true
 warn_no_return = false
+install_types = true
+non_interactive = true
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]

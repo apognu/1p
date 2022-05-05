@@ -3,12 +3,10 @@ import json
 import sys
 
 from ..util import exit, fatal, run
+from ..colors import *
 
 
 def show(session: str, to_json: bool, id: str, tags: str, fields: str, otp: bool, select: bool) -> None:
-    if len(id) == 0 and tags is None:
-        fatal("Either tags or ID should be provided")
-
     if len(id) > 0:
         id = " ".join(id)
     else:
@@ -22,7 +20,7 @@ def show(session: str, to_json: bool, id: str, tags: str, fields: str, otp: bool
         if len(entries) == 0:
             exit("No entry matched these filters.")
         if not select and len(entries) > 1:
-            print("WARN: Multiple entries responded to this query, showing the first", file=sys.stderr)
+            print(f"{yellow('WARN')}: Multiple entries responded to this query, showing the first", file=sys.stderr)
 
         if not select:
             id = entries[0]["id"]

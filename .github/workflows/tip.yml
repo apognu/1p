@@ -52,15 +52,15 @@ jobs:
           poetry build
       - name: Rename artifacts
         run: |
-          mv dist/1p-*.whl dist/1p-tip-py3-none-any.whl
-          mv dist/1p-*.tar.gz dist/1p-tip.tar.gz
+          mv dist/onep-*.whl dist/onep-tip-py3-none-any.whl
+          mv dist/onep-*.tar.gz dist/onep-tip.tar.gz
       - name: Upload artifacts
         uses: actions/upload-artifact@v2
         with:
           name: 1p-tip
           path: |
-            dist/1p-tip-py3-none-any.whl
-            dist/1p-tip.tar.gz
+            dist/onep-tip-py3-none-any.whl
+            dist/onep-tip.tar.gz
 
   package:
     runs-on: ubuntu-20.04

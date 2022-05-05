@@ -6,6 +6,8 @@ import sys
 
 from os import path
 
+from .colors import *
+
 CACHE_DIR = path.expanduser("~/.cache/1p")
 KEYRING_SERVICE = "com.github.apognu.1p"
 
@@ -16,7 +18,7 @@ def exit(message: str) -> None:
 
 
 def fatal(message: str) -> None:
-    print(message.strip(), file=sys.stdout)
+    print(f"{red('ERROR:')} {message.strip()}", file=sys.stdout)
     sys.exit(1)
 
 
@@ -50,7 +52,7 @@ def init_secret_storage() -> None:
             os.mkdir(CACHE_DIR, mode=0o700)
 
         if oct(os.stat(CACHE_DIR).st_mode & 0o777) != oct(0o700):
-            fatal("ERROR: cannot use session directory because mode is not 700")
+            fatal("cannot use session directory because mode is not 700")
 
 
 def session_file(account: str) -> str:
@@ -63,19 +65,19 @@ def load_session(account: str) -> Optional[str]:
             file = session_file(account)
 
             if oct(os.stat(file).st_mode & 0o777) != oct(0o600):
-                fatal("ERROR: cannot use session because mode is not 600")
+                fatal("cannot use session because mode is not 600")
 
             with open(file) as f:
                 return f.read()
         except FileNotFoundError:
             return None
         except Exception as e:
-            fatal(f"ERROR: cannot read session file: {type(e).__name__}")
+            fatal(f"cannot read session file: {type(e).__name__}")
     else:
         try:
             return keyring.get_password(KEYRING_SERVICE, account)
         except keyring.errors.KeyringError as e:
-            fatal(f"ERROR: cannot read session file: {type(e).__name__}")
+            fatal(f"cannot read session file: {type(e).__name__}")
 
 
 def check_session(account: str) -> Optional[str]:
