@@ -1,10 +1,11 @@
 import json
-import sys
+
+from typing import List
 
 from ..util import exit, fatal, run
 
 
-def search(session: str, to_json: bool, vault: str, tags: str, term: list[str]) -> None:
+def search(session: str, to_json: bool, vault: str, tags: str, term: List[str]) -> None:
     args = ["item", "list", "--format=json"]
 
     if vault is not None:

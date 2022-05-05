@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import Optional, List, Tuple
 import keyring
 import os
 import subprocess
@@ -20,7 +20,7 @@ def fatal(message: str) -> None:
     sys.exit(1)
 
 
-def run(args: list[str], session: Optional[str] = None, json: bool = False, silent: bool = False) -> tuple[bool, str, str]:
+def run(args: List[str], session: Optional[str] = None, json: bool = False, silent: bool = False) -> Tuple[bool, str, str]:
     if session is not None:
         args.append(f"--session={session}")
 

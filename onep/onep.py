@@ -22,19 +22,18 @@ def main() -> None:
 
     assert session is not None
 
-    match args.command:
-        case "signin":
-            signin(args.account)
-        case "vaults":
-            vaults(session, args.json)
-        case "vault":
-            vault(session, args.json, args.id)
-        case "search":
-            search(session, args.json, args.vault, args.tags, args.term)
-        case "show":
-            show(session, args.json, args.id, args.tags, args.fields, args.otp, args.select)
-        case "share":
-            share(session, args.id, args.time, args.once)
+    if args.command == "signin":
+        signin(args.account)
+    elif args.command == "vaults":
+        vaults(session, args.json)
+    elif args.command == "vault":
+        vault(session, args.json, args.id)
+    elif args.command == "search":
+        search(session, args.json, args.vault, args.tags, args.term)
+    elif args.command == "show":
+        show(session, args.json, args.id, args.tags, args.fields, args.otp, args.select)
+    elif args.command == "share":
+        share(session, args.id, args.time, args.once)
 
 
 def parse_args() -> Namespace:

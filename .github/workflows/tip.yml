@@ -27,7 +27,7 @@ jobs:
       - name: Run linters
         run: |
           poetry config virtualenvs.in-project true
-          poetry install --no-root
+          poetry install
           poetry run black --check .
           poetry run mypy .
 
@@ -78,5 +78,3 @@ jobs:
           title: Development build
           prerelease: true
           files: dist/1p-tip/*
-
-
