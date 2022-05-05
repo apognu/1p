@@ -9,7 +9,7 @@ packages = [
 ]
 
 [tool.poetry.dependencies]
-python = "^3.10"
+python = ">=3.7"
 inquirer = "^2.9.2"
 keyring = "^23.5.0"
 
@@ -25,8 +25,7 @@ line-length = 200
 
 [tool.mypy]
 exclude = [".venv/"]
-# follow_imports = "skip"
-# ignore_missing_imports = true
+strict = true
 warn_no_return = false
 
 [build-system]

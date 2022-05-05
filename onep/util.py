@@ -20,7 +20,7 @@ def fatal(message: str) -> None:
     sys.exit(1)
 
 
-def run(args: list[str], session: str = None, json: bool = False, silent: bool = False) -> tuple[bool, str, str]:
+def run(args: list[str], session: Optional[str] = None, json: bool = False, silent: bool = False) -> tuple[bool, str, str]:
     if session is not None:
         args.append(f"--session={session}")
 
