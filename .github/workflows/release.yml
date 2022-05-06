@@ -1,0 +1,110 @@
+name: Continuous master build
+
+on:
+  push:
+    tags:
+      - "[0-9]+.[0-9]+.[0-9]+"
+
+jobs:
+  lint:
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: [3.7, 3.8, 3.9, "3.10"]
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/cache@v2
+        with:
+          path: .venv/
+          key: virtualenv
+      - uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+      - uses: abatilo/actions-poetry@v2.0.0
+        with:
+          poetry-version: "1.1.13"
+      - name: Run linters
+        run: |
+          poetry config virtualenvs.in-project true
+          poetry install
+          poetry run black --check .
+          poetry run mypy .
+
+  build:
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Get release version
+        id: version
+        run: echo ::set-output name=VERSION::${GITHUB_REF/refs\/tags\//}
+      - uses: actions/checkout@v2
+      - uses: actions/cache@v2
+        with:
+          path: .venv/
+          key: virtualenv
+      - uses: actions/setup-python@v2
+        with:
+          python-version: "3.10.4"
+      - uses: abatilo/actions-poetry@v2.0.0
+        with:
+          poetry-version: "1.1.13"
+      - name: Build artifacts
+        run: |
+          poetry config virtualenvs.in-project true
+          poetry install --no-dev
+          poetry build
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: 1p-${{ steps.version.outputs.VERSION }}
+          path: |
+            dist/onep-${{ steps.version.outputs.VERSION }}-py3-none-any.whl
+            dist/onep-${{ steps.version.outputs.VERSION }}.tar.gz
+
+  package:
+    runs-on: ubuntu-20.04
+    needs: [lint, build]
+    steps:
+      - name: Get release version
+        id: version
+        run: echo ::set-output name=VERSION::${GITHUB_REF/refs\/tags\//}
+      - name: Download artifacts
+        uses: actions/download-artifact@v2
+        with:
+          path: dist/
+      - name: Create release
+        uses: marvinpinto/action-automatic-releases@latest
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          automatic_release_tag: tip
+          title: v${{ steps.version.outputs.VERSION }}
+          prerelease: true
+          files: dist/1p-${{ steps.version.outputs.VERSION }}/*
+
+  publish:
+    runs-on: ubuntu-20.04
+    needs: [package]
+    steps:
+      - name: Get release version
+        id: version
+        run: echo ::set-output name=VERSION::${GITHUB_REF/refs\/tags\//}
+      - uses: actions/checkout@v2
+      - uses: actions/cache@v2
+        with:
+          path: .venv/
+          key: virtualenv
+      - uses: actions/setup-python@v2
+        with:
+          python-version: "3.10.4"
+      - name: Download artifacts
+        uses: actions/download-artifact@v2
+        with:
+          path: dist/
+      - uses: abatilo/actions-poetry@v2.0.0
+        with:
+          poetry-version: "1.1.13"
+      - name: Publish to PyPI
+        run: |
+          mv dist/1p-${{ steps.version.outputs.VERSION }}/* dist/
+          poetry config pypi-token.pypi ${{ secrets.PYPI_API_TOKEN }}
+          poetry publish
