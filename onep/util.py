@@ -1,10 +1,11 @@
-from typing import Optional, List, Tuple
 import keyring
 import os
 import subprocess
 import sys
 
 from os import path
+from prettytable import PrettyTable  # type: ignore
+from typing import Optional, List, Tuple
 
 from .colors import *
 
@@ -13,12 +14,12 @@ KEYRING_SERVICE = "com.github.apognu.1p"
 
 
 def exit(message: str) -> None:
-    print(message.strip(), file=sys.stdout)
+    print(message.strip(), file=sys.stderr)
     sys.exit(0)
 
 
 def fatal(message: str) -> None:
-    print(f"{red('ERROR:')} {message.strip()}", file=sys.stdout)
+    print(f"{red('ERROR:')} {message.strip()}", file=sys.stderr)
     sys.exit(1)
 
 
@@ -94,3 +95,13 @@ def check_session(account: str) -> Optional[str]:
         return signin(account)
 
     return session
+
+
+def create_table(headers: List[str]) -> PrettyTable:
+    table = PrettyTable()
+    table.field_names = headers
+    table.align = "l"
+    table.padding_width = 2
+    table.border = False
+
+    return table

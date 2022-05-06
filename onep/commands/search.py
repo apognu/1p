@@ -2,7 +2,7 @@ import json
 
 from typing import List
 
-from ..util import exit, fatal, run
+from ..util import fatal, run, create_table
 
 
 def search(session: str, to_json: bool, vault: str, tags: str, term: List[str]) -> None:
@@ -27,10 +27,7 @@ def search(session: str, to_json: bool, vault: str, tags: str, term: List[str]) 
 
     entries = list(map(lambda entry: [entry["id"], entry["title"]], sorted(entries, key=lambda entry: entry["title"])))  # type: ignore
 
-    if len(entries) == 0:
-        exit("No entry matched these filters.")
+    table = create_table(["ID", "TITLE"])
+    table.add_rows(entries)
 
-    print("{:26}    {}".format(*["ID", "TITLE"]))
-
-    for entry in entries:
-        print("{:26}    {}".format(*entry))
+    print(table)
