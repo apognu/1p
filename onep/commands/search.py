@@ -25,7 +25,7 @@ def search(session: str, to_json: bool, vault: str, tags: str, term: List[str]) 
         id = " ".join(term)
         entries = list(filter(lambda entry: id.lower() in entry["title"].lower(), entries))
 
-    entries = list(map(lambda entry: [entry["id"], entry["title"]], entries))
+    entries = list(map(lambda entry: [entry["id"], entry["title"]], sorted(entries, key=lambda entry: entry["title"])))  # type: ignore
 
     if len(entries) == 0:
         exit("No entry matched these filters.")

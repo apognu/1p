@@ -25,7 +25,8 @@ def show(session: str, to_json: bool, id: str, tags: str, fields: str, otp: bool
         if not select:
             id = entries[0]["id"]
         else:
-            entry = inquirer.prompt([inquirer.List("entry", message="Select an entry", choices=list(map(lambda e: (f"{e['title']} ({e['id']})", e["id"]), entries)))])
+            entries = list(map(lambda e: (f"{e['title']} ({e['id']})", e["id"]), sorted(entries, key=lambda entry: entry["title"])))  # type: ignore
+            entry = inquirer.prompt([inquirer.List("entry", message="Select an entry", choices=entries)])
 
             id = entry["entry"]
 
