@@ -1,9 +1,19 @@
 [tool.poetry]
 name = "onep"
 version = "0.1.0"
+
 description = "1Password CLI helper"
 authors = ["Antoine POPINEAU <antoine@popineau.eu>"]
 license = "MIT"
+
+repository = "https://github.com/apognu/1p"
+readme = "README.md"
+classifiers = [
+  "Topic :: Security",
+  "Topic :: Utilities"
+]
+keywords = ["password", "1password", "cli", "secrets"]
+
 packages = [
   { include = "onep/**/*.py" }
 ]
