@@ -1,6 +1,6 @@
 import sys
 
-from argparse import ArgumentParser, Namespace
+from argparse import ArgumentParser, Namespace, BooleanOptionalAction
 
 from .util import init_secret_storage, check_session, fatal
 from .colors import *
@@ -33,6 +33,8 @@ def main() -> None:
         search(session, args.json, args.vault, args.tags, args.term)
     elif args.command == "show":
         show(session, args.json, args.id, args.tags, args.fields, args.otp, args.select)
+    elif args.command == "create":
+        create(session, args.vault, args.title, args.url, args.fields, args.tags, args.password_length, args.symbols)
     elif args.command == "share":
         share(session, args.id, args.time, args.once)
 
@@ -62,6 +64,15 @@ def parse_args() -> Namespace:
     cmd_show.add_argument("-f", "--fields", type=str, metavar="FIELDS")
     cmd_show.add_argument("-o", "--otp", action="store_true")
     cmd_show.add_argument("-s", "--select", action="store_true")
+
+    cmd_create = commands.add_parser("create", help="create an entry")
+    cmd_create.add_argument("-v", "--vault", type=str, metavar="VAULT", required=True)
+    cmd_create.add_argument("-u", "--url", type=str, metavar="URL")
+    cmd_create.add_argument("-t", "--tags", type=str, metavar="TAGS")
+    cmd_create.add_argument("--password-length", type=int, default=32)
+    cmd_create.add_argument("--symbols", type=bool, action=BooleanOptionalAction, default=True)
+    cmd_create.add_argument("title", metavar="TITLE")
+    cmd_create.add_argument("fields", metavar="FIELD", nargs="+")
 
     cmd_share = commands.add_parser("share", help="get a shareable link to an item")
     cmd_share.add_argument("id", metavar="ID")
