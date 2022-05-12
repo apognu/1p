@@ -25,18 +25,21 @@ $ 1p --help
 usage: 1p [-h] [-j] ACCOUNT COMMAND ...
 
 positional arguments:
-  ACCOUNT
+  ACCOUNT     shorthand of the 1Password account
   COMMAND
-    signin    Authenticate into a 1Password account
-    vaults    List available vaults
-    vault     Show information about a vault
-    search    Search entries matching provided term
-    show      Display an entry
-    share     Get a shareable link to an item
+    signin    authenticate into a 1Password account
+    vaults    list available vaults
+    vault     show information about a vault
+    search    search entries matching provided term
+    show      display an entry
+    create    create an entry
+    edit      edit an entry
+    delete    delete an entry
+    share     get a shareable link to an item
 
 options:
   -h, --help  show this help message and exit
-  -j, --json
+  -j, --json  format output as JSON
 
 $ 1p personal search -t social
 ID                            TITLE

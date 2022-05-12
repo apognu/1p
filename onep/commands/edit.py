@@ -35,7 +35,6 @@ def create(
 
 def edit(
     session: str,
-    vault: Optional[str],
     id: str,
     url: Optional[str],
     specs: List[str],
@@ -51,9 +50,6 @@ def edit(
             fields.append(f"{field}[delete]")
 
     args = ["item", "edit", id] + fields
-
-    if vault is not None:
-        args.append(f"--vault={vault}")
 
     if url is not None:
         args.append(f"--url={url}")

@@ -1,3 +1,4 @@
+from .delete import *
 from .edit import *
 from .search import *
 from .share import *

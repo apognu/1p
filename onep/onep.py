@@ -36,7 +36,9 @@ def main() -> None:
     elif args.command == "create":
         create(session, args.vault, args.title, args.url, args.fields, args.tags, args.password_length, args.symbols)
     elif args.command == "edit":
-        edit(session, args.vault, args.id, args.url, args.fields, args.tags, args.delete, args.password_length, args.symbols)
+        edit(session, args.id, args.url, args.fields, args.tags, args.delete, args.password_length, args.symbols)
+    elif args.command == "delete":
+        delete(session, args.archive, args.id)
     elif args.command == "share":
         share(session, args.id, args.time, args.once)
 
@@ -77,7 +79,6 @@ def parse_args() -> Namespace:
     cmd_create.add_argument("fields", metavar="FIELD", nargs="+")
 
     cmd_edit = commands.add_parser("edit", help="edit an entry")
-    cmd_edit.add_argument("-v", "--vault", type=str, metavar="VAULT")
     cmd_edit.add_argument("-u", "--url", type=str, metavar="URL")
     cmd_edit.add_argument("-t", "--tags", type=str, metavar="TAGS")
     cmd_edit.add_argument("-d", "--delete", type=str, action="append", metavar="FIELD")
@@ -85,6 +86,10 @@ def parse_args() -> Namespace:
     cmd_edit.add_argument("--symbols", type=bool, action=BooleanOptionalAction, default=True)
     cmd_edit.add_argument("id", metavar="ID")
     cmd_edit.add_argument("fields", metavar="FIELD", nargs="*")
+
+    cmd_delete = commands.add_parser("delete", help="delete an entry")
+    cmd_delete.add_argument("-a", "--archive", action="store_true")
+    cmd_delete.add_argument("id", metavar="ID")
 
     cmd_share = commands.add_parser("share", help="get a shareable link to an item")
     cmd_share.add_argument("id", metavar="ID")

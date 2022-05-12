@@ -78,6 +78,7 @@ jobs:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           automatic_release_tag: ${{ steps.version.outputs.VERSION }}
           title: v${{ steps.version.outputs.VERSION }}
+          prerelease: false
           files: dist/1p-${{ steps.version.outputs.VERSION }}/*
 
   publish:
