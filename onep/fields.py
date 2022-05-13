@@ -1,21 +1,45 @@
 from __future__ import annotations
 
 import getpass
+import phonenumbers
 import secrets
 import string
+import validators  # type: ignore
 
 from enum import Enum
+from urllib.parse import urlparse
 
 from .util import fatal
 
 
 class FieldKind(Enum):
-    PLAIN = "plain"
-    SECRET = "secret"
-    TOTP = "totp"
+    PLAIN = "text"
+    SECRET = "password"
+    URL = "url"
+    EMAIL = "email"
+    PHONE = "phone"
+    TOTP = "otp"
 
     def is_secret(self) -> bool:
         return self in [FieldKind.SECRET, FieldKind.TOTP]
+
+
+def is_url(value: str) -> bool:
+    try:
+        result = urlparse(value)
+
+        return all([result.scheme, result.netloc])
+    except ValueError:
+        return False
+
+
+def is_phone_number(value: str) -> bool:
+    try:
+        result = phonenumbers.parse(value)
+
+        return phonenumbers.is_possible_number(result)
+    except phonenumbers.NumberParseException:
+        return False
 
 
 class Field:
@@ -42,6 +66,12 @@ class Field:
         elif key.startswith("+"):
             kind = FieldKind.TOTP
             key = key.lstrip("+")
+        elif is_url(value):
+            kind = FieldKind.URL
+        elif validators.email(value):
+            kind = FieldKind.EMAIL
+        elif is_phone_number(value):
+            kind = FieldKind.PHONE
 
         if value == "":
             if not kind.is_secret():
@@ -63,12 +93,7 @@ class Field:
         return Field(kind, key, value)
 
     def to_string(self) -> str:
-        if self.kind == FieldKind.SECRET:
-            kind = "password"
-        elif self.kind == FieldKind.TOTP:
-            kind = "otp"
-            value = f"otpauth://totp/?secret={self.value}"
-        else:
-            kind = "text"
+        if self.kind == FieldKind.TOTP:
+            self.value = f"otpauth://totp/?secret={self.value}"
 
-        return f"{self.key}[{kind}]={self.value}"
+        return f"{self.key}[{self.kind.value}]={self.value}"

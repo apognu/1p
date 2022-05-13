@@ -24,6 +24,8 @@ inquirer = "^2.9.2"
 keyring = "^23.5.0"
 termcolor = "^1.1.0"
 prettytable = "^3.3.0"
+validators = "^0.19.0"
+phonenumbers = "^8.12.48"
 
 [tool.poetry.dev-dependencies]
 black = "^22.3.0"

@@ -34,9 +34,9 @@ def main() -> None:
     elif args.command == "show":
         show(session, args.json, args.id, args.tags, args.fields, args.otp, args.select)
     elif args.command == "create":
-        create(session, args.vault, args.title, args.url, args.fields, args.tags, args.password_length, args.symbols)
+        create(session, args.vault, args.category, args.title, args.fields, args.tags, args.password_length, args.symbols)
     elif args.command == "edit":
-        edit(session, args.id, args.url, args.fields, args.tags, args.delete, args.password_length, args.symbols)
+        edit(session, args.id, args.fields, args.tags, args.delete, args.password_length, args.symbols)
     elif args.command == "delete":
         delete(session, args.archive, args.id)
     elif args.command == "share":
@@ -71,6 +71,7 @@ def parse_args() -> Namespace:
 
     cmd_create = commands.add_parser("create", help="create an entry")
     cmd_create.add_argument("-v", "--vault", type=str, metavar="VAULT", required=True)
+    cmd_create.add_argument("-c", "--category", type=str, metavar="CATEGORY", default="login")
     cmd_create.add_argument("-u", "--url", type=str, metavar="URL")
     cmd_create.add_argument("-t", "--tags", type=str, metavar="TAGS")
     cmd_create.add_argument("--password-length", type=int, default=32)
@@ -79,7 +80,6 @@ def parse_args() -> Namespace:
     cmd_create.add_argument("fields", metavar="FIELD", nargs="+")
 
     cmd_edit = commands.add_parser("edit", help="edit an entry")
-    cmd_edit.add_argument("-u", "--url", type=str, metavar="URL")
     cmd_edit.add_argument("-t", "--tags", type=str, metavar="TAGS")
     cmd_edit.add_argument("-d", "--delete", type=str, action="append", metavar="FIELD")
     cmd_edit.add_argument("--password-length", type=int, default=32)

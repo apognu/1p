@@ -11,18 +11,15 @@ from ..colors import *
 def create(
     session: str,
     vault: str,
+    category: str,
     title: str,
-    url: Optional[str],
     specs: List[str],
     tags: Optional[str],
     length: int,
     symbols: bool,
 ) -> None:
     fields = list(map(lambda spec: Field.from_spec(spec, length, symbols).to_string(), specs))
-    args = ["item", "create", "--category=login", f"--vault={vault}", f"--title={title}"] + fields
-
-    if url is not None:
-        args.append(f"--url={url}")
+    args = ["item", "create", f"--category={category}", f"--vault={vault}", f"--title={title}"] + fields
 
     if tags is not None:
         args.append(f"--tags={tags}")
@@ -36,7 +33,6 @@ def create(
 def edit(
     session: str,
     id: str,
-    url: Optional[str],
     specs: List[str],
     tags: Optional[str],
     delete: Optional[List[str]],
@@ -50,9 +46,6 @@ def edit(
             fields.append(f"{field}[delete]")
 
     args = ["item", "edit", id] + fields
-
-    if url is not None:
-        args.append(f"--url={url}")
 
     if tags is not None:
         args.append(f"--tags={tags}")

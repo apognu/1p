@@ -46,3 +46,13 @@ ID                            TITLE
 __________________________    GitHub
 __________________________    Twitter
 ```
+
+## Item creation syntax
+
+Item creation syntax tries to determine the type of the provided values (URLs, email addresses and phone numbers), if possible. It also provides some utility to control the way values are entered and interpreted:
+
+ * `field=` will set the type as `password` and prompt for the value interactively
+ * `field=-` will set the type as `password` and generate a random value
+ * `@field=value` will explicitely set the type as `password`
+ * `+field=totpsecret` will consider the provided value as a TOTP secret key
+ * `section.field=value` will create a field under a named section
