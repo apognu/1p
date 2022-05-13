@@ -35,6 +35,8 @@ positional arguments:
     create    create an entry
     edit      edit an entry
     delete    delete an entry
+    download  download a document
+    upload    upload a document
     share     get a shareable link to an item
 
 options:

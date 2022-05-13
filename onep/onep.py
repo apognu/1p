@@ -39,6 +39,10 @@ def main() -> None:
         edit(session, args.id, args.fields, args.tags, args.delete, args.password_length, args.symbols)
     elif args.command == "delete":
         delete(session, args.archive, args.id)
+    elif args.command == "download":
+        download(session, args.title)
+    elif args.command == "upload":
+        upload(session, args.vault, args.title, args.file, args.filename)
     elif args.command == "share":
         share(session, args.id, args.time, args.once)
 
@@ -90,6 +94,15 @@ def parse_args() -> Namespace:
     cmd_delete = commands.add_parser("delete", help="delete an entry")
     cmd_delete.add_argument("-a", "--archive", action="store_true")
     cmd_delete.add_argument("id", metavar="ID")
+
+    cmd_download = commands.add_parser("download", help="download a document")
+    cmd_download.add_argument("title", metavar="TITLE")
+
+    cmd_upload = commands.add_parser("upload", help="upload a document")
+    cmd_upload.add_argument("-v", "--vault", type=str, metavar="VAULT", required=True)
+    cmd_upload.add_argument("-f", "--filename", type=str, metavar="FILENAME")
+    cmd_upload.add_argument("title", metavar="TITLE")
+    cmd_upload.add_argument("file", metavar="FILE")
 
     cmd_share = commands.add_parser("share", help="get a shareable link to an item")
     cmd_share.add_argument("id", metavar="ID")

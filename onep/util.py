@@ -23,15 +23,20 @@ def fatal(message: str) -> None:
     sys.exit(1)
 
 
-def run(args: List[str], session: Optional[str] = None, json: bool = False, silent: bool = False) -> Tuple[bool, str, str]:
+def run(args: List[str], session: Optional[str] = None, json: bool = False, silent: bool = False, stdin: Optional[str] = None) -> Tuple[bool, str, str]:
     if session is not None:
         args.append(f"--session={session}")
 
     if json:
         args.append("--format=json")
 
-    cmd = subprocess.Popen(["op"] + args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-    stdout, stderr = cmd.communicate()
+    if stdin is not None:
+        input = stdin.encode()
+    else:
+        input = None
+
+    cmd = subprocess.Popen(["op"] + args, stdout=subprocess.PIPE, stderr=subprocess.PIPE, stdin=subprocess.PIPE)
+    stdout, stderr = cmd.communicate(input=input)
 
     if not silent:
         if len(stdout) > 0:
