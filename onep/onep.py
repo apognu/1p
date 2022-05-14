@@ -1,53 +1,55 @@
 import sys
 
+from typing import List, Optional
 from argparse import ArgumentParser, Namespace, BooleanOptionalAction
+
+from onep import commands
 
 from .util import init_secret_storage, check_session, fatal
 from .colors import *
-from onep.commands import *
 
 
-def main() -> None:
+def main(args: Optional[List[str]] = None) -> None:
     init_secret_storage()
 
-    args = parse_args()
+    cli = parse_args(args)
 
-    if args.command is None:
+    if cli.command is None:
         fatal("no command provided")
 
-    if args.command != "signin":
-        session = check_session(args.account)
+    if cli.command != "signin":
+        session = check_session(cli.account)
 
         if session is None:
             sys.exit(1)
 
     assert session is not None
 
-    if args.command == "signin":
-        signin(args.account)
-    elif args.command == "vaults":
-        vaults(session, args.json)
-    elif args.command == "vault":
-        vault(session, args.json, args.id)
-    elif args.command == "search":
-        search(session, args.json, args.vault, args.tags, args.term)
-    elif args.command == "show":
-        show(session, args.json, args.id, args.tags, args.fields, args.otp, args.select)
-    elif args.command == "create":
-        create(session, args.vault, args.category, args.title, args.fields, args.tags, args.password_length, args.symbols)
-    elif args.command == "edit":
-        edit(session, args.id, args.fields, args.tags, args.delete, args.password_length, args.symbols)
-    elif args.command == "delete":
-        delete(session, args.archive, args.id)
-    elif args.command == "download":
-        download(session, args.title)
-    elif args.command == "upload":
-        upload(session, args.vault, args.title, args.file, args.filename)
-    elif args.command == "share":
-        share(session, args.id, args.time, args.once)
+    if cli.command == "signin":
+        commands.signin.signin(cli.account)
+    elif cli.command == "vaults":
+        commands.vaults.vaults(session, cli.json)
+    elif cli.command == "vault":
+        commands.vaults.vault(session, cli.json, cli.id)
+    elif cli.command == "search":
+        commands.search.search(session, cli.json, cli.vault, cli.tags, cli.term)
+    elif cli.command == "show":
+        commands.show.show(session, cli.json, cli.id, cli.tags, cli.fields, cli.otp, cli.select)
+    elif cli.command == "create":
+        commands.edit.create(session, cli.vault, cli.category, cli.title, cli.fields, cli.tags, cli.password_length, cli.symbols)
+    elif cli.command == "edit":
+        commands.edit.edit(session, cli.id, cli.fields, cli.tags, cli.delete, cli.password_length, cli.symbols)
+    elif cli.command == "delete":
+        commands.delete.delete(session, cli.archive, cli.id)
+    elif cli.command == "download":
+        commands.document.download(session, cli.title)
+    elif cli.command == "upload":
+        commands.document.upload(session, cli.vault, cli.title, cli.file, cli.filename)
+    elif cli.command == "share":
+        commands.share.share(session, cli.id, cli.time, cli.once)
 
 
-def parse_args() -> Namespace:
+def parse_args(args: Optional[List[str]]) -> Namespace:
     cli = ArgumentParser(prog="1p")
     cli.add_argument("-j", "--json", action="store_true", help="format output as JSON")
     cli.add_argument("account", metavar="ACCOUNT", help="shorthand of the 1Password account")
@@ -109,4 +111,4 @@ def parse_args() -> Namespace:
     cmd_share.add_argument("-t", "--time", type=str, metavar="EXPIRY")
     cmd_share.add_argument("-o", "--once", action="store_true")
 
-    return cli.parse_args()
+    return cli.parse_args(args)

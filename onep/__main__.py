@@ -1,3 +1,5 @@
+import sys
+
 from onep.onep import main
 
-main()
+main(sys.argv)

@@ -32,10 +32,12 @@ def run(args: List[str], session: Optional[str] = None, json: bool = False, sile
 
     if stdin is not None:
         input = stdin.encode()
+        pipe = subprocess.PIPE
     else:
         input = None
+        pipe = None
 
-    cmd = subprocess.Popen(["op"] + args, stdout=subprocess.PIPE, stderr=subprocess.PIPE, stdin=subprocess.PIPE)
+    cmd = subprocess.Popen(["op"] + args, stdout=subprocess.PIPE, stderr=subprocess.PIPE, stdin=pipe)
     stdout, stderr = cmd.communicate(input=input)
 
     if not silent:
@@ -87,7 +89,7 @@ def load_session(account: str) -> Optional[str]:
 
 
 def check_session(account: str) -> Optional[str]:
-    from onep.commands import signin
+    from onep.commands.signin import signin
 
     session = load_session(account)
 
