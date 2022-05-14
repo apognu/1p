@@ -5,7 +5,10 @@ from onep.onep import main
 
 @pytest.mark.parametrize("option", ("--help", "-h"))
 def test_help(capsys, option) -> None:
-    main([option])
+    try:
+        main([option])
+    except SystemExit:
+        pass
 
     output = capsys.readouterr().out
 

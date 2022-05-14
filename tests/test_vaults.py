@@ -21,7 +21,10 @@ TWO_VAULTS_OUTPUT = """[{"id": "vault1", "name": "First vault"}, {"id": "vault2"
 @mock.patch("onep.util.load_session", return_value="dummysession")
 @mock.patch("onep.commands.vaults.run", return_value=(True, TWO_VAULTS_OUTPUT, ""))
 def test_two_vaults(a, b, c, capsys):
-    main(["personal", "vaults"])
+    try:
+        main(["personal", "vaults"])
+    except SystemExit:
+        pass
 
     output = capsys.readouterr().out
 
