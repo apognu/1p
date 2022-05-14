@@ -1,7 +1,7 @@
 import json
 import sys
 
-from ..util import fatal, run, create_table
+from ..util import exit, fatal, run, create_table
 
 
 def vaults(session: str, to_json: bool) -> None:
