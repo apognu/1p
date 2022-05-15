@@ -9,6 +9,8 @@ from typing import Optional, List, Tuple
 
 from .colors import *
 
+OP_COMMAND = "op"
+
 CACHE_DIR = path.expanduser("~/.cache/1p")
 KEYRING_SERVICE = "com.github.apognu.1p"
 
@@ -37,7 +39,7 @@ def run(args: List[str], session: Optional[str] = None, json: bool = False, sile
         input = None
         pipe = None
 
-    cmd = subprocess.Popen(["op"] + args, stdout=subprocess.PIPE, stderr=subprocess.PIPE, stdin=pipe)
+    cmd = subprocess.Popen([OP_COMMAND] + args, stdout=subprocess.PIPE, stderr=subprocess.PIPE, stdin=pipe)
     stdout, stderr = cmd.communicate(input=input)
 
     if not silent:
@@ -45,7 +47,7 @@ def run(args: List[str], session: Optional[str] = None, json: bool = False, sile
             print(stdout.decode("utf-8").strip())
 
         if len(stderr) > 0:
-            print(stderr.decode("utf-8").strip())
+            print(stderr.decode("utf-8").strip(), file=sys.stderr)
 
     return (cmd.returncode == 0, stdout.decode("utf-8"), stderr.decode("utf-8"))
 

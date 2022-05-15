@@ -39,3 +39,24 @@ def test_exit(capsys):
     assert e.value.code == 0
     assert "ERROR:" not in output
     assert "dummy output" in output
+
+
+def test_no_account(capsys):
+    with pytest.raises(SystemExit) as e:
+        main([])
+
+    output = capsys.readouterr().err
+
+    assert e.value.code == 2
+    assert "the following arguments are required: ACCOUNT" in output
+
+
+def test_no_command(capsys):
+    with pytest.raises(SystemExit) as e:
+        main(["personal"])
+
+    output = capsys.readouterr().err
+
+    assert e.value.code == 1
+    assert "ERROR:" in output
+    assert "no command provided" in output

@@ -1,16 +1,6 @@
 import mock
 import pytest
 
-
-def test_plain_explicit_secret():
-    field = Field.from_spec("@key=value", 0, False)
-
-    assert field.kind == FieldKind.SECRET
-    assert field.key == "key"
-    assert field.value == "value"
-    assert field.to_string() == "key[password]=value"
-
-
 from onep.fields import FieldKind, Field
 
 

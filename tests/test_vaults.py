@@ -17,7 +17,18 @@ def test_no_vaults(capsys):
     assert "There are no vaults in this account." in output
 
 
-TWO_VAULTS_OUTPUT = """[{"id": "vault1", "name": "First vault"}, {"id": "vault2", "name": "Second vault"}]"""
+TWO_VAULTS_OUTPUT = """
+  [
+    {
+      "id": "vault1",
+      "name": "First vault"
+    },
+    {
+      "id": "vault2",
+      "name": "Second vault"
+    }
+  ]
+"""
 
 
 @common.session
