@@ -2,12 +2,12 @@ import pytest
 import mock
 
 from onep.onep import main
+from . import common
 
 
-@mock.patch("onep.onep.check_session", return_value="dummysession")
-@mock.patch("onep.util.load_session", return_value="dummysession")
+@common.session
 @mock.patch("onep.commands.vaults.run", return_value=(True, "{}", ""))
-def test_no_vaults(a, b, c, capsys):
+def test_no_vaults(a, capsys):
     with pytest.raises(SystemExit) as e:
         main(["personal", "vaults"])
 
@@ -20,10 +20,9 @@ def test_no_vaults(a, b, c, capsys):
 TWO_VAULTS_OUTPUT = """[{"id": "vault1", "name": "First vault"}, {"id": "vault2", "name": "Second vault"}]"""
 
 
-@mock.patch("onep.onep.check_session", return_value="dummysession")
-@mock.patch("onep.util.load_session", return_value="dummysession")
+@common.session
 @mock.patch("onep.commands.vaults.run", return_value=(True, TWO_VAULTS_OUTPUT, ""))
-def test_two_vaults(a, b, c, capsys):
+def test_two_vaults(a, capsys):
     try:
         main(["personal", "vaults"])
     except SystemExit:
