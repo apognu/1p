@@ -1,13 +1,12 @@
-import pytest
 import mock
 
 from onep.onep import main
-from . import common
+from tests import common
 
 
 @common.session
-@mock.patch("onep.commands.search.run", return_value=(True, "[]", ""))
-def test_search_no_result(a, capsys):
+@mock.patch("onep.commands.search.run", mock.MagicMock(return_value=(True, "[]", "")))
+def test_search_no_result(capsys):
     try:
         main(["personal", "search", "dummy"])
     except SystemExit:
@@ -22,8 +21,8 @@ ENTRIES = """[{"id": "entry1", "title": "First entry"}, {"id": "entry2", "title"
 
 
 @common.session
-@mock.patch("onep.commands.search.run", return_value=(True, ENTRIES, ""))
-def test_search(a, capsys):
+@mock.patch("onep.commands.search.run", mock.MagicMock(return_value=(True, ENTRIES, "")))
+def test_search(capsys):
     try:
         main(["personal", "search", "-t", "dummy"])
     except SystemExit:
@@ -39,8 +38,8 @@ def test_search(a, capsys):
 
 
 @common.session
-@mock.patch("onep.commands.search.run", return_value=(True, ENTRIES, ""))
-def test_search_filter(a, capsys):
+@mock.patch("onep.commands.search.run", mock.MagicMock(return_value=(True, ENTRIES, "")))
+def test_search_filter(capsys):
     try:
         main(["personal", "search", "-t", "dummy", "Second"])
     except SystemExit:
