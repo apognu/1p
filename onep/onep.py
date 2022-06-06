@@ -34,7 +34,7 @@ def main(args: Optional[List[str]] = None) -> None:
     elif cli.command == "search":
         commands.search.search(session, cli.json, cli.vault, cli.tags, cli.term)
     elif cli.command == "show":
-        commands.show.show(session, cli.json, cli.id, cli.tags, cli.fields, cli.otp, cli.select)
+        commands.show.show(session, cli.json, cli.id, cli.tags, cli.fields, cli.otp, cli.select, cli.copy)
     elif cli.command == "create":
         commands.edit.create(session, cli.vault, cli.category, cli.title, cli.fields, cli.tags, cli.password_length, cli.symbols)
     elif cli.command == "edit":
@@ -74,6 +74,7 @@ def parse_args(args: Optional[List[str]]) -> Namespace:
     cmd_show.add_argument("-f", "--fields", type=str, metavar="FIELDS")
     cmd_show.add_argument("-o", "--otp", action="store_true")
     cmd_show.add_argument("-s", "--select", action="store_true")
+    cmd_show.add_argument("-c", "--copy", action="store_true")
 
     cmd_create = commands.add_parser("create", help="create an entry")
     cmd_create.add_argument("-v", "--vault", type=str, metavar="VAULT", required=True)
