@@ -2,7 +2,7 @@
 
 `1p` is a wrapper around 1Password's `op` CLI tool to give a more user-friendly interface to secret retrieval.
 
-Requires Python >= 3.7.
+Requires Python >= 3.9.
 
 It opens a session with 1Password and stores the session token in the system's keyring, optionally, you can run with `ONEP_SECRET_BACKEND=plain` to store it under `~/.cache/1p`.
 

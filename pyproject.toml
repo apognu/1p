@@ -19,7 +19,7 @@ packages = [
 ]
 
 [tool.poetry.dependencies]
-python = ">=3.7"
+python = ">=3.9"
 inquirer = "^2.9.2"
 keyring = "^23.5.0"
 termcolor = "^1.1.0"
